@@ -36,6 +36,7 @@ import (
 	"github.com/golang/glog"
 
 	"github.com/Azure/ip-masq-agent-v2/cmd/ip-masq-agent-v2/testing/fakefs"
+	"github.com/Azure/ip-masq-agent-v2/utils"
 )
 
 const (
@@ -44,7 +45,8 @@ const (
 	linkLocalCIDRIPv6 = "fe80::/10"
 	// TODO change the below to configurable flags
 	// path to a yaml or json files
-	configPath = "/etc/config/"
+	configPath      = "/etc/config/"
+	healthProbePath = "/tmp/ip-masq-agent/"
 	// config files in this path must start with this to be read
 	configFilePrefix = "ip-masq"
 )
@@ -148,6 +150,8 @@ func main() {
 	defer logs.FlushLogs()
 
 	verflag.PrintAndExitIfRequested()
+
+	utils.WriteHealthy(healthProbePath)
 
 	m := NewMasqDaemon(c)
 	m.Run()
